@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'quick_study'
+
+QuickStudy::ReviewQuestion.new({})
+
+OptionParser.new do |opts|
+  opts.banner = 'Usage: quick_study [options]'
+
+  opts.on('-h', '--help', 'Prints this help') do
+    puts opts
+    exit
+  end
+
+  opts.on('-r', '--review', 'Start a new review') do
+    puts 'starting review'
+    exit
+  end
+end.parse!
