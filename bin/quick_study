@@ -2,6 +2,7 @@
 
 require 'quick_study'
 require 'optparse'
+require 'pry'
 
 OptionParser.new do |opts|
   opts.banner = 'Usage: quick_study [options]'
@@ -17,7 +18,7 @@ OptionParser.new do |opts|
   end
 
   opts.on('-r', '--review', 'Start a new review') do
-    puts 'starting review'
+    require 'quick_study/app/review_app.rb'
     exit
   end
 end.parse!
