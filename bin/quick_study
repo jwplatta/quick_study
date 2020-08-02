@@ -1,15 +1,18 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
 require 'quick_study'
-
-QuickStudy::ReviewQuestion.new({})
+require 'optparse'
 
 OptionParser.new do |opts|
   opts.banner = 'Usage: quick_study [options]'
 
   opts.on('-h', '--help', 'Prints this help') do
     puts opts
+    exit
+  end
+
+  opts.on('-c', '--config', 'Configure study area') do
+    puts 'Configuring the study area'
     exit
   end
 
