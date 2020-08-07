@@ -1,2 +1,4 @@
 quick_study-0.1.0.gem
+spec/quick_study_dir/json/chapter_one.json
 pkg
+.rspec_status
