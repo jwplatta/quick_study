@@ -12,12 +12,43 @@ OptionParser.new do |opts|
     exit
   end
 
-  opts.on('-c', '--config', 'Configure study area') do
-    puts 'Configuring the study area'
+  opts.on('-p', '--parse', 'Parse notes') do
+    raise 'Not a study room' unless File.file?(File.expand_path('.') + '/.quick_study')
+
+    notes_path = File.expand_path('.') + '/notes'
+    json_path = File.expand_path('.') + '/json'
+
+    Dir.glob(notes_path + "/*.md").each do |note|
+      note_file = File.open(note, 'r')
+
+      QuickStudy::MarkdownToJSONConverter.new(markdown_file: note_file, json_dir: json_path).convert
+    end
+
+    system("ls #{json_path}")
+  end
+
+  opts.on('-c', '--config name', 'Configure study room') do |study_room_name|
+    raise ArgumentError, "Please provide a study room name" if study_room_name.nil?
+
+    puts "Configuring the study area\n"
+
+    study_room_path = File.expand_path('.') + '/' + study_room_name
+
+    system("mkdir #{study_room_path}")
+
+    puts "Created study room at #{study_room_path}\n"
+
+    system("mkdir #{study_room_path}/json")
+    system("mkdir #{study_room_path}/notes")
+    system("touch #{study_room_path}/.quick_study")
+    system("echo #{study_room_name} >> #{study_room_path}/.quick_study")
+
     exit
   end
 
   opts.on('-r', '--review', 'Start a new review') do
+    raise 'This is not a study area' unless File.file?("./.quick_study")
+
     require 'quick_study/app/review_app.rb'
     exit
   end
