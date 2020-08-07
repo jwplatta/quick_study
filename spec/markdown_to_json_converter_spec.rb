@@ -25,16 +25,16 @@ RSpec.describe QuickStudy::MarkdownToJSONConverter do
 
       let(:expected_hash) do
         {
-          'set_title' => '# Chapter 1',
+          'set_title' => 'Chapter 1',
           'questions' => [
-            { 'topic' => '# Chapter 1',
-              'question_text' => '- Question 1',
+            { 'topic' => 'Chapter 1',
+              'question_text' => 'Question 1',
               'answer_text' => 'Answer 1',
               'tags' => [] },
-            { 'topic' => '# Chapter 1',
-              'question_text' => '- Question 2',
+            { 'topic' => 'Chapter 1',
+              'question_text' => 'Question 2',
               'answer_text' => 'Answer 2',
-              'tags' => [] }
+              'tags' => ['pg 123', 'foobar'] }
           ]
         }
       end
