@@ -1,3 +1,5 @@
+require 'json'
+
 module QuickStudy
   class MarkdownToJSONConverter
     def initialize(markdown_file:, json_dir:)
@@ -6,11 +8,6 @@ module QuickStudy
       @markdown_file = markdown_file
       @filename = File.basename(markdown_file, '.*')
       @json_dir = json_dir
-
-      # TODO: move to rake task
-      # @markdown_files = Dir.glob(markdown_dir + '/*').map do |file_name|
-      #   [File.basename(file_name, '.*'), File.open(file_name, 'r')]
-      # end.to_h
     end
 
     attr_reader :markdown_file, :filename, :json_dir
@@ -34,7 +31,9 @@ module QuickStudy
         raise ArgumentError, 'File has no topic'
       end
 
-      [markdown_text.shift, markdown_text]
+      formatted_topic = markdown_text.shift.gsub('#', '').strip
+
+      [formatted_topic, markdown_text]
     end
 
     def build_json(topic, review_questions)
@@ -48,23 +47,41 @@ module QuickStudy
       review_questions = []
 
       while answers_questions.count.positive?
-        question_text = answers_questions.shift
-        answer_text = if answers_questions.empty? || answers_questions[0].start_with?('-')
-                        'no answer'
+        question_text = if answers_questions[0].start_with?('-')
+                          text = answers_questions.shift
+                          text[0] = ''
+                          text.strip!
+                        else
+                          raise 'Missing question'
+                        end
+
+        answer_text = if !answers_questions[0].nil? && answers_questions[0].start_with?('answer:')
+                        text = answers_questions.shift
+                        text.gsub('answer:', '').strip!
                       else
-                        answers_questions.shift
+                        'no answer'
                       end
-        review_questions << build_review_question(topic, question_text, answer_text)
+
+        tags = if !answers_questions[0].nil? && answers_questions[0].start_with?('tags:')
+          text = answers_questions.shift
+          text = text.gsub('tags:', '').strip
+          text.split(',').map(&:strip)
+        else
+          []
+        end
+
+        review_questions << build_review_question(topic, question_text, answer_text, tags)
       end
 
       review_questions
     end
 
-    def build_review_question(topic, question_text, answer_text)
+    def build_review_question(topic, question_text, answer_text, tags)
       ReviewQuestion.new(
         topic: topic,
         question_text: question_text,
-        answer_text: answer_text
+        answer_text: answer_text,
+        tags: tags
       )
     end
 
