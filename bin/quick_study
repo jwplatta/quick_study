@@ -42,7 +42,9 @@ OptionParser.new do |opts|
     system("mkdir #{study_room_path}/questions")
     system("mkdir #{study_room_path}/notes")
     system("touch #{study_room_path}/.quick_study")
+    system("touch #{study_room_path}/README.md")
     system("echo #{study_room_name} >> #{study_room_path}/.quick_study")
+    system("echo '# #{study_room_name}' >> #{study_room_path}/README.md")
 
     exit
   end
