@@ -15,7 +15,7 @@ OptionParser.new do |opts|
   opts.on('-p', '--parse', 'Parse notes') do
     raise 'Not a study room' unless File.file?(File.expand_path('.') + '/.quick_study')
 
-    notes_path = File.expand_path('.') + '/notes'
+    notes_path = File.expand_path('.') + '/questions'
     json_path = File.expand_path('.') + '/json'
 
     Dir.glob(notes_path + "/*.md").each do |note|
@@ -39,6 +39,7 @@ OptionParser.new do |opts|
     puts "Created study room at #{study_room_path}\n"
 
     system("mkdir #{study_room_path}/json")
+    system("mkdir #{study_room_path}/questions")
     system("mkdir #{study_room_path}/notes")
     system("touch #{study_room_path}/.quick_study")
     system("echo #{study_room_name} >> #{study_room_path}/.quick_study")
