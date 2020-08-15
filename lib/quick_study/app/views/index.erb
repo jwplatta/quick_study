@@ -65,6 +65,10 @@
         list-style-type: none;
       }
 
+      p.emphasis {
+        font-style: italic;
+      }
+
       /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
       @media (max-width: 600px) {
         nav,
@@ -83,8 +87,18 @@
       <div id="nav_sidebar">
         <nav>
           <ul>
-            <li><a href="/">Restart</a></li>
-            <li><a href="/parse">Parse</a></li>
+            <li>
+              <form method='POST' action='/parse'>
+                <input type="submit" value="Parse">
+              </form>
+            </li>
+            <li>
+              <form method='POST' action='/'>
+                <p>Question Count: <input type="number" name="count" value=0></p>
+                <p class="emphasis">Note: zero defaults to all questions.</p>
+                <input type="submit" value="Restart">
+              </form>
+            </li>
           </ul>
         </nav>
       </div>

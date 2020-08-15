@@ -28,7 +28,7 @@ OptionParser.new do |opts|
   end
 
   opts.on('-c', '--config name', 'Configure study room') do |study_room_name|
-    raise ArgumentError, "Please provide a study room name" if study_room_name.nil?
+    raise ArgumentError, "Please provide a study room name" if study_room_name.nil? || study_room_name.blank?
 
     puts "Configuring the study area\n"
 
